@@ -300,7 +300,19 @@ function AtlantisRuins({ depth = 'front' }) {
   );
 }
 
-function OceanBackground() {
+/* Unsplash underwater photo layers — one per page, cross-faded.
+   Heavy color overlay ensures legibility; SVG ocean/sharks layer on top.
+   Each URL hits Unsplash's image CDN directly so it's cache-friendly.
+   If a photo fails to load, the SVG ocean still carries the scene. */
+const OCEAN_PHOTOS = {
+  home:      'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=2400&q=80&auto=format&fit=crop',
+  pricing:   'https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=2400&q=80&auto=format&fit=crop',
+  templates: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=2400&q=80&auto=format&fit=crop',
+  info:      'https://images.unsplash.com/photo-1551244072-5d12893278ab?w=2400&q=80&auto=format&fit=crop',
+  contact:   'https://images.unsplash.com/photo-1483683804023-6ccdb62f86ef?w=2400&q=80&auto=format&fit=crop',
+};
+
+function OceanBackground({ page = 'home' }) {
   const bubbles = [
     { cls: 'b1', left: '6%',  size: 18, dur: 16, delay: 0  },
     { cls: 'b2', left: '14%', size: 10, dur: 22, delay: 4  },
@@ -312,10 +324,27 @@ function OceanBackground() {
     { cls: 'b8', left: '90%', size: 16, dur: 28, delay: 10 },
   ];
 
+  /* Preload all photos once so cross-fading between pages is instant. */
+  useEffect(() => {
+    Object.values(OCEAN_PHOTOS).forEach((src) => { const i = new Image(); i.src = src; });
+  }, []);
+
   return (
     <div id="ocean-bg" aria-hidden="true">
+      {/* Photographic underwater layer — keyed by page, fades on swap */}
+      <div className="ocean-photo-wrap">
+        {Object.entries(OCEAN_PHOTOS).map(([p, src]) => (
+          <div
+            key={p}
+            className={'ocean-photo' + (p === page ? ' is-active' : '')}
+            style={{ backgroundImage: `url("${src}")` }}
+          />
+        ))}
+        <div className="ocean-photo-tint" />
+      </div>
+
       {/* Back → front:
-         depth vignette → mid ruins (parallax) → god rays → deep shark
+         photo → depth vignette → mid ruins → god rays → deep shark
          → foreground shark → front ruins → bubbles + plankton */}
       <div className="ocean-depth" />
 
@@ -349,6 +378,32 @@ function OceanBackground() {
       </div>
     </div>
   );
+}
+
+/* ════════════════════════════════════════════════
+   REVEAL ON SCROLL — IntersectionObserver, once
+   Any element with className `reveal` gets `is-visible`
+   added when it enters the viewport.
+   ════════════════════════════════════════════════ */
+function useScrollReveal(deps = []) {
+  useEffect(() => {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => io.observe(el));
+    });
+    return () => io.disconnect();
+  }, deps);
 }
 
 /* ════════════════════════════════════════════════
@@ -573,4 +628,4 @@ function PageShell({ nav, page, title, sub, children }) {
 
 }
 
-Object.assign(window, { Cursor, CursorStar, Clock, GlowAmbient, OceanBackground, Home, PageShell });
+Object.assign(window, { Cursor, CursorStar, Clock, GlowAmbient, OceanBackground, Home, PageShell, useScrollReveal });

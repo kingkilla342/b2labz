@@ -110,16 +110,22 @@ window.BBZ_DATA = {
 
   work: [
     { name: 'Lumen Barbershop',  cat: 'Local Service · Class 02',  span: 4, ratio: 'wide',  num: '01',
+      img: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1200&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 80% 100% at 50% 100%, #14B8A6 0%, #0A3656 45%, #02060E 100%)' },
     { name: 'Ines Couture',      cat: 'Fashion · Class 03',        span: 2, ratio: 'tall',  num: '02',
+      img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1000&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 70% 90% at 70% 30%, #58D6FF 0%, #0A3656 50%, #02060E 100%)' },
     { name: 'Ola Studio',        cat: 'Creator · Class 04',        span: 2, ratio: 'tall',  num: '03',
+      img: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1000&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 100% 60% at 50% 50%, #2EE6D0 0%, #115E78 40%, #02060E 100%)' },
     { name: 'Reef + Co.',        cat: 'E-Commerce · Class 05',     span: 2, ratio: 'tall',  num: '04',
+      img: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1000&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 80% 70% at 30% 70%, #7CF5DC 0%, #0A3656 50%, #02060E 100%)' },
     { name: 'Atlas Trainers',    cat: 'Coach · Class 02',          span: 2, ratio: 'tall',  num: '05',
+      img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1000&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 60% 80% at 60% 40%, #58D6FF 0%, #072541 55%, #02060E 100%)' },
     { name: 'Verdant Catering',  cat: 'Food · Class 02',           span: 4, ratio: 'wide',  num: '06',
+      img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80&auto=format&fit=crop',
       bg: 'radial-gradient(ellipse 90% 60% at 30% 30%, #14E1A8 0%, #0A3656 50%, #02060E 100%)' },
   ],
 

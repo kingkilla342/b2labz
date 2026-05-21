@@ -5,6 +5,7 @@ const DATA2 = window.BBZ_DATA;
    PRICING — six service classes
    ════════════════════════════════════════════════ */
 function PricingPage({ nav }) {
+  window.useScrollReveal([]);
   return (
     <window.PageShell nav={nav} page="pricing" title="Pricing" sub="six classes, fixed price">
       <p style={{ fontSize: '1rem', color: 'var(--color-secondary-light)', lineHeight: 1.7, maxWidth: '58ch', marginBottom: 36 }}>
@@ -14,7 +15,7 @@ function PricingPage({ nav }) {
 
       <div className="card-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18 }}>
         {DATA2.services.map((s, i) => (
-          <article key={s.cls} className="card glass-strong" style={{ padding: 26, display: 'flex', flexDirection: 'column', gap: 14, minHeight: 360 }}>
+          <article key={s.cls} className="card glass-strong reveal" style={{ padding: 26, display: 'flex', flexDirection: 'column', gap: 14, minHeight: 360, transitionDelay: (i * 0.06) + 's' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.62rem', letterSpacing: '0.16em', color: 'var(--color-accent)' }}>
                 {s.cls}
@@ -83,6 +84,7 @@ function PricingPage({ nav }) {
    TEMPLATES — work gallery
    ════════════════════════════════════════════════ */
 function TemplatesPage({ nav }) {
+  window.useScrollReveal([]);
   return (
     <window.PageShell nav={nav} page="templates" title="Templates" sub="selected client builds">
       <p style={{ fontSize: '1rem', color: 'var(--color-secondary-light)', lineHeight: 1.7, maxWidth: '58ch', marginBottom: 36 }}>
@@ -92,24 +94,38 @@ function TemplatesPage({ nav }) {
 
       <div className="card-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {DATA2.work.map((w, i) => (
-          <a key={w.name} className="card glass-strong" onClick={() => nav('contact')} style={{
+          <a key={w.name} className="card glass-strong reveal" onClick={() => nav('contact')} style={{
             display: 'flex', flexDirection: 'column',
             height: 320, overflow: 'hidden', padding: 0,
+            transitionDelay: (i * 0.07) + 's',
           }}>
-            <div style={{
+            <div className="work-thumb" style={{
               flex: 1,
               background: w.bg,
               position: 'relative',
+              overflow: 'hidden',
             }}>
+              {w.img && (
+                <img
+                  src={w.img}
+                  alt={w.name + ' — site preview'}
+                  loading="lazy"
+                  decoding="async"
+                  className="work-thumb-img"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              )}
+              <div className="work-thumb-tint" style={{ background: w.bg }} />
               <div style={{
                 position: 'absolute', top: 14, left: 16,
                 fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.14em',
-                color: 'rgba(255,255,255,0.75)',
+                color: 'rgba(255,255,255,0.85)', zIndex: 2,
+                textShadow: '0 1px 6px rgba(0,0,0,0.65)',
               }}>
                 {w.num} / 06
               </div>
               <div style={{
-                position: 'absolute', top: 12, right: 12,
+                position: 'absolute', top: 12, right: 12, zIndex: 2,
               }}>
                 <span className="tag">CASE STUDY</span>
               </div>
@@ -142,6 +158,7 @@ function TemplatesPage({ nav }) {
    ════════════════════════════════════════════════ */
 function InfoPage({ nav }) {
   const [openFaq, setOpenFaq] = React.useState(0);
+  window.useScrollReveal([]);
 
   return (
     <window.PageShell nav={nav} page="info" title="Info" sub="who we are, how we work">
@@ -193,8 +210,8 @@ function InfoPage({ nav }) {
           Process · Six Steps
         </div>
         <div className="card-grid-6" style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10 }}>
-          {DATA2.process.map((p) => (
-            <div key={p.n} className="card" style={{ padding: '18px 16px' }}>
+          {DATA2.process.map((p, i) => (
+            <div key={p.n} className="card reveal" style={{ padding: '18px 16px', transitionDelay: (i * 0.05) + 's' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.14em', color: 'var(--color-accent)', marginBottom: 10 }}>{p.n}</div>
               <h5 style={{ fontSize: '0.95rem', fontWeight: 600, letterSpacing: '-0.01em', marginBottom: 6 }}>{p.title}</h5>
               <p style={{ fontSize: '0.72rem', color: 'var(--color-muted)', lineHeight: 1.5 }}>{p.desc}</p>
@@ -210,7 +227,7 @@ function InfoPage({ nav }) {
         </div>
         <div style={{ borderTop: '1px solid var(--border-subtle)' }}>
           {DATA2.faq.map((f, i) => (
-            <div key={f.q} style={{ borderBottom: '1px solid var(--border-subtle)', padding: '18px 0' }}
+            <div key={f.q} className="faq-row" style={{ borderBottom: '1px solid var(--border-subtle)', padding: '18px 16px', cursor: 'none', borderRadius: 4 }}
                  onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18 }}>
                 <h4 style={{ fontSize: '1rem', fontWeight: 500, letterSpacing: '-0.01em', color: openFaq === i ? 'var(--color-accent)' : 'var(--fg-primary)', transition: 'color 0.2s' }}>{f.q}</h4>
@@ -245,6 +262,7 @@ function InfoPage({ nav }) {
    ════════════════════════════════════════════════ */
 function ContactPage({ nav }) {
   const [sent, setSent] = React.useState(false);
+  window.useScrollReveal([]);
   return (
     <window.PageShell nav={nav} page="contact" title="Contact" sub="send a brief, reply in 24h">
       <div className="info-split card-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 56 }}>
@@ -404,15 +422,32 @@ function TweaksPanel({ visible, scheme, setScheme }) {
    APP ROOT
    ════════════════════════════════════════════════ */
 const STORAGE_KEY = 'bbz-page';
+const VALID_PAGES = ['home', 'pricing', 'templates', 'info', 'contact'];
+
+function readInitialPage() {
+  const hash = (typeof window !== 'undefined' ? window.location.hash : '').replace(/^#/, '');
+  if (VALID_PAGES.includes(hash)) return hash;
+  const stored = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+  return VALID_PAGES.includes(stored) ? stored : 'home';
+}
 
 function App() {
-  const [page, setPage] = React.useState(() => localStorage.getItem(STORAGE_KEY) || 'home');
+  const [page, setPage] = React.useState(readInitialPage);
   const [tweaksVisible, setTweaksVisible] = React.useState(false);
   const [scheme, setScheme] = React.useState(() => TWEAK_DEFAULTS.scheme || 'Atlantis');
 
   React.useEffect(() => {
     applyScheme(scheme);
   }, []);
+
+  React.useEffect(() => {
+    const onHash = () => {
+      const h = window.location.hash.replace(/^#/, '');
+      if (VALID_PAGES.includes(h) && h !== page) setPage(h);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, [page]);
 
   React.useEffect(() => {
     const handler = (e) => {
@@ -427,6 +462,10 @@ function App() {
   const nav = React.useCallback((p) => {
     setPage(p);
     localStorage.setItem(STORAGE_KEY, p);
+    const newHash = p === 'home' ? '' : '#' + p;
+    if (window.location.hash !== newHash) {
+      history.replaceState(null, '', newHash || window.location.pathname);
+    }
   }, []);
 
   const pages = {
@@ -441,7 +480,7 @@ function App() {
 
   return (
     <>
-      <window.OceanBackground />
+      <window.OceanBackground page={page} />
       <window.Cursor />
       <window.CursorStar />
       <div key={page} style={{ position: 'relative', zIndex: 1, animation: 'pageIn 0.55s var(--ease-out) forwards' }}>
