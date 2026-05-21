@@ -499,19 +499,20 @@ a.glass-strong:hover {
   will-change: opacity;
 }
 .ocean-photo.is-active {
-  opacity: 0.32;
+  opacity: 0.22;
   transform: scale(1.0);
 }
-/* Tint overlay — pulls every photo into the Atlantis palette, keeps legibility */
+/* Tint overlay — pulls every photo into the Atlantis palette, keeps legibility
+   while letting the SVG ruins + shark sit clearly on top. */
 .ocean-photo-tint {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 120% 60% at 50% 0%, rgba(124,245,220,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 120% 60% at 50% 0%, rgba(124,245,220,0.05) 0%, transparent 55%),
     linear-gradient(180deg,
-      rgba(3,16,31,0.55) 0%,
-      rgba(4,24,43,0.65) 35%,
-      rgba(2,9,26,0.85) 70%,
-      rgba(1,6,14,0.95) 100%);
+      rgba(3,16,31,0.45) 0%,
+      rgba(4,24,43,0.55) 35%,
+      rgba(2,9,26,0.78) 70%,
+      rgba(1,6,14,0.92) 100%);
 }
 
 /* God-ray light beams from the surface */
@@ -590,24 +591,24 @@ a.glass-strong:hover {
 /* ── SHARK — silhouette glides across the viewport ── */
 .shark-track {
   position: absolute;
-  top: 38%;
+  top: 36%;
   left: 0;
   width: 100%;
   height: 0;
-  animation: shark-swim 48s linear infinite;
+  animation: shark-swim 34s linear infinite;
   will-change: transform;
 }
 .shark {
   position: absolute;
   left: -22vw;
-  width: 22vw;
-  max-width: 360px;
-  min-width: 180px;
+  width: 24vw;
+  max-width: 420px;
+  min-width: 200px;
   height: auto;
   filter:
-    drop-shadow(0 14px 24px rgba(0,0,0,0.55))
-    drop-shadow(0 0 18px rgba(46,230,208,0.10));
-  opacity: 0.92;
+    drop-shadow(0 14px 24px rgba(0,0,0,0.6))
+    drop-shadow(0 0 22px rgba(46,230,208,0.22));
+  opacity: 1;
 }
 /* Foreground shark moves left→right; flip horizontally so head leads */
 .shark-track .shark { transform: scaleX(-1); }
@@ -637,13 +638,13 @@ a.glass-strong:hover {
 /* A distant, smaller silhouette shark in the deep for parallax depth */
 .shark-deep {
   position: absolute;
-  top: 72%;
-  width: 12vw;
-  max-width: 200px;
-  min-width: 110px;
-  opacity: 0.28;
-  filter: blur(1.2px) drop-shadow(0 0 12px rgba(0,0,0,0.6));
-  animation: shark-swim-deep 82s linear infinite;
+  top: 68%;
+  width: 13vw;
+  max-width: 220px;
+  min-width: 120px;
+  opacity: 0.38;
+  filter: blur(1px) drop-shadow(0 0 14px rgba(0,0,0,0.6));
+  animation: shark-swim-deep 60s linear infinite;
   will-change: transform;
 }
 .shark-deep .tail-group {
@@ -668,14 +669,16 @@ a.glass-strong:hover {
 }
 .ruins-mid {
   bottom: 8%;
-  opacity: 0.55;
+  opacity: 0.62;
   transform: scale(0.78);
   transform-origin: 50% 100%;
-  filter: blur(1.5px);
+  filter: blur(1.4px) drop-shadow(0 -2px 14px rgba(46,230,208,0.10));
 }
 .ruins-front {
-  opacity: 0.95;
-  filter: drop-shadow(0 -2px 6px rgba(124,245,220,0.05));
+  opacity: 1;
+  filter:
+    drop-shadow(0 -3px 10px rgba(124,245,220,0.18))
+    drop-shadow(0 -10px 30px rgba(46,230,208,0.10));
 }
 
 /* Reduced motion: freeze everything */
