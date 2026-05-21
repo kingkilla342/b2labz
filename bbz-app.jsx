@@ -175,6 +175,131 @@ function SharkSVG({ flip = false }) {
   );
 }
 
+function AtlantisRuins({ depth = 'front' }) {
+  /* Static SVG silhouette of a sunken city — temple, columns, dome,
+     scattered ruins. Two depths layered for parallax: 'mid' (further,
+     fainter, slightly blurred) and 'front' (closer, darker, sharper). */
+  const id = 'ruins-' + depth;
+  const topStop = depth === 'front' ? '#0a2942' : '#0e3a5c';
+  const botStop = depth === 'front' ? '#01060e' : '#031526';
+
+  return (
+    <svg className={'ruins ruins-' + depth}
+         viewBox="0 0 1920 540"
+         preserveAspectRatio="xMidYEnd slice"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+      <defs>
+        <linearGradient id={id + '-grad'} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stopColor={topStop} />
+          <stop offset="60%" stopColor={botStop} />
+          <stop offset="100%" stopColor="#000308" />
+        </linearGradient>
+        <linearGradient id={id + '-rim'} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"   stopColor="rgba(124,245,220,0.35)" />
+          <stop offset="100%" stopColor="rgba(124,245,220,0)" />
+        </linearGradient>
+      </defs>
+
+      <g fill={'url(#' + id + '-grad)'}>
+        {/* Sea-floor base */}
+        <path d="M 0 440 Q 480 420 960 442 T 1920 438 L 1920 540 L 0 540 Z" />
+
+        {/* — LEFT FIELD — scattered short pillars + low wall */}
+        <rect x="40"  y="400" width="36" height="40"  rx="2" />
+        <rect x="32"  y="396" width="52" height="10" />
+        <path d="M 110 405 L 140 372 L 168 392 L 196 360 L 224 388 L 252 370 L 280 400 L 110 400 Z" /> {/* broken wall ridge */}
+        <rect x="120" y="400" width="160" height="42" />
+
+        {/* Standing column with capital */}
+        <rect x="306" y="296" width="46" height="146" />
+        <rect x="296" y="286" width="66" height="14" />
+        <rect x="296" y="280" width="66" height="6" />
+        <rect x="312" y="296" width="6" height="146" fill="#000308" opacity="0.5" /> {/* flute shadow */}
+
+        {/* Big arched gateway (broken pediment) */}
+        <path d="M 396 442 L 396 232
+                 Q 396 196 432 196
+                 L 504 196
+                 Q 540 196 540 232
+                 L 540 442
+                 L 510 442
+                 L 510 280
+                 Q 468 254 426 280
+                 L 426 442 Z" />
+        <rect x="386" y="220" width="160" height="14" />
+
+        {/* — CENTRAL TEMPLE — wide stepped base + colonnade + pediment */}
+        {/* Stepped platform */}
+        <rect x="556" y="404" width="780" height="38" />
+        <rect x="572" y="386" width="748" height="20" />
+        <rect x="588" y="368" width="716" height="20" />
+
+        {/* 8 fluted columns */}
+        {[612, 700, 788, 876, 964, 1052, 1140, 1228].map((x) => (
+          <g key={x}>
+            <rect x={x} y="208" width="50" height="160" />
+            <rect x={x - 6} y="194" width="62" height="14" />
+            <rect x={x - 6} y="188" width="62" height="6" />
+            <rect x={x + 4} y="208" width="6" height="160" fill="#000308" opacity="0.45" />
+            <rect x={x + 22} y="208" width="6" height="160" fill="#000308" opacity="0.35" />
+            <rect x={x + 40} y="208" width="6" height="160" fill="#000308" opacity="0.45" />
+          </g>
+        ))}
+
+        {/* Architrave + frieze */}
+        <rect x="596" y="172" width="694" height="18" />
+        <rect x="596" y="158" width="694" height="14" />
+
+        {/* Triangular pediment — broken at the apex */}
+        <path d="M 596 158 L 880 64 L 920 78 L 944 60 L 980 80 L 1290 158 Z" />
+
+        {/* — RIGHT SIDE — domed temple */}
+        <rect x="1376" y="324" width="248" height="120" />
+        <path d="M 1376 324
+                 Q 1500 194 1624 324 Z" />
+        <rect x="1488" y="252" width="24" height="74" />
+        <path d="M 1488 252 L 1500 220 L 1512 252 Z" />
+        <rect x="1376" y="324" width="248" height="6" />
+
+        {/* Two flanking columns next to dome */}
+        <rect x="1340" y="284" width="34" height="160" />
+        <rect x="1334" y="276" width="46" height="10" />
+        <rect x="1626" y="284" width="34" height="160" />
+        <rect x="1622" y="276" width="46" height="10" />
+
+        {/* — FAR RIGHT — broken pillars + scattered blocks */}
+        <rect x="1696" y="358" width="42" height="86" />
+        <path d="M 1696 358 L 1708 346 L 1720 360 L 1738 348 L 1738 358 Z" />
+
+        <rect x="1772" y="396" width="34" height="46" />
+        <rect x="1768" y="392" width="42" height="8" />
+
+        <rect x="1830" y="316" width="46" height="128" />
+        <rect x="1822" y="306" width="62" height="12" />
+
+        {/* Scattered floor blocks (gives the seafloor "rubble" texture) */}
+        <rect x="170" y="430" width="76" height="14" />
+        <rect x="264" y="432" width="48" height="12" />
+        <rect x="492" y="430" width="62" height="14" />
+        <rect x="1316" y="430" width="74" height="14" />
+        <rect x="1416" y="434" width="38" height="10" />
+        <rect x="1710" y="432" width="58" height="12" />
+      </g>
+
+      {/* Top-edge rim light: subtle teal cast on column tops mimicking god rays */}
+      <g fill={'url(#' + id + '-rim)'} opacity="0.55">
+        {[612, 700, 788, 876, 964, 1052, 1140, 1228].map((x) => (
+          <rect key={x} x={x - 6} y="188" width="62" height="6" />
+        ))}
+        <rect x="306" y="280" width="56" height="6" />
+        <rect x="1334" y="276" width="46" height="6" />
+        <rect x="1622" y="276" width="46" height="6" />
+      </g>
+    </svg>
+  );
+}
+
 function OceanBackground() {
   const bubbles = [
     { cls: 'b1', left: '6%',  size: 18, dur: 16, delay: 0  },
@@ -189,14 +314,28 @@ function OceanBackground() {
 
   return (
     <div id="ocean-bg" aria-hidden="true">
+      {/* Back → front:
+         depth vignette → mid ruins (parallax) → god rays → deep shark
+         → foreground shark → front ruins → bubbles + plankton */}
       <div className="ocean-depth" />
+
+      <AtlantisRuins depth="mid" />
+
       <div className="ocean-rays" />
-      <div className="ocean-caustics" />
-      <div className="ocean-particles" />
 
       <div className="shark shark-deep">
         <SharkSVG flip />
       </div>
+
+      <div className="shark-track">
+        <div className="shark">
+          <SharkSVG />
+        </div>
+      </div>
+
+      <AtlantisRuins depth="front" />
+
+      <div className="ocean-particles" />
 
       <div className="ocean-bubbles">
         {bubbles.map((b) => (
@@ -207,12 +346,6 @@ function OceanBackground() {
             animationDelay: '-' + b.delay + 's',
           }} />
         ))}
-      </div>
-
-      <div className="shark-track">
-        <div className="shark">
-          <SharkSVG />
-        </div>
       </div>
     </div>
   );

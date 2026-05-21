@@ -415,20 +415,7 @@ textarea.bbz-input { resize: vertical; min-height: 110px; }
 }
 
 /* Caustic shimmer (slow drifting "water surface" reflections) */
-.ocean-caustics {
-  position: absolute; inset: -10%;
-  background:
-    radial-gradient(ellipse 30% 20% at 20% 30%, rgba(124,245,220,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 25% 18% at 70% 60%, rgba(88,214,255,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 25% at 40% 80%, rgba(46,230,208,0.04) 0%, transparent 60%);
-  mix-blend-mode: screen;
-  animation: caustic-drift 32s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes caustic-drift {
-  0%   { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(4%, -3%) scale(1.08); }
-}
+/* (caustics layer removed — too expensive for the perceived gain) */
 
 /* Floor-glow + deep-vignette layer (depth) */
 .ocean-depth {
@@ -501,6 +488,8 @@ textarea.bbz-input { resize: vertical; min-height: 110px; }
     drop-shadow(0 0 18px rgba(46,230,208,0.10));
   opacity: 0.92;
 }
+/* Foreground shark moves left→right; flip horizontally so head leads */
+.shark-track .shark { transform: scaleX(-1); }
 .shark .tail-group {
   transform-origin: 175px 60px;
   animation: tail-wag 1.6s ease-in-out infinite;
@@ -540,16 +529,37 @@ textarea.bbz-input { resize: vertical; min-height: 110px; }
   transform-origin: 175px 60px;
   animation: tail-wag 2.2s ease-in-out infinite;
 }
+/* Deep shark moves right→left; SVG already faces left, so no flip */
 @keyframes shark-swim-deep {
-  0%   { transform: translate3d(120vw, 0,   0) scaleX(-1); }
-  50%  { transform: translate3d(50vw,  1.4vh, 0) scaleX(-1); }
-  100% { transform: translate3d(-25vw, 0,   0) scaleX(-1); }
+  0%   { transform: translate3d(120vw, 0,   0); }
+  50%  { transform: translate3d(50vw,  1.4vh, 0); }
+  100% { transform: translate3d(-25vw, 0,   0); }
+}
+
+/* ── ATLANTIS RUINS — static silhouette skyline at the seafloor ── */
+.ruins {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  display: block;
+}
+.ruins-mid {
+  bottom: 8%;
+  opacity: 0.55;
+  transform: scale(0.78);
+  transform-origin: 50% 100%;
+  filter: blur(1.5px);
+}
+.ruins-front {
+  opacity: 0.95;
+  filter: drop-shadow(0 -2px 6px rgba(124,245,220,0.05));
 }
 
 /* Reduced motion: freeze everything */
 @media (prefers-reduced-motion: reduce) {
   .ocean-rays,
-  .ocean-caustics,
   .ocean-particles,
   .bubble,
   .shark-track,
@@ -559,14 +569,14 @@ textarea.bbz-input { resize: vertical; min-height: 110px; }
   }
 }
 
-/* Mobile: lighter ocean — keep one shark, drop particles + caustics + bubbles count */
+/* Mobile: lighter ocean — keep one shark, drop particles + bubbles count */
 @media (max-width: 800px) {
-  .ocean-caustics,
   .ocean-particles { display: none; }
   .ocean-rays { opacity: 0.35; }
   .shark-deep { display: none; }
   .shark-track { top: 30%; animation-duration: 60s; }
   .bubble.b5, .bubble.b6, .bubble.b7, .bubble.b8 { display: none; }
+  .ruins-mid { display: none; }
 }
 
 @media (min-width: 801px) and (max-width: 1024px) {
