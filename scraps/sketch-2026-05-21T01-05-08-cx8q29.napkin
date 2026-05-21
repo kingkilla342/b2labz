@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "created": "2026-05-21T01:05:08.978Z",
+  "modified": "2026-05-21T01:21:26.239Z",
+  "objects": [
+    {
+      "id": "2w25dqp2p",
+      "type": "rect",
+      "x": 96,
+      "y": 99.33333206176758,
+      "width": 282,
+      "height": 161,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "xv3qqtwkn",
+      "type": "sticky",
+      "x": 115,
+      "y": 129.33333206176758,
+      "width": 100,
+      "height": 60,
+      "data": {
+        "content": "Main Screen.\n\n-same as design system.\n-custom hero as the background.\n-buttons leading to other pages.\n-hover over the buttons and you will see the pages the page(as like a prediction into the future)  ",
+        "color": "yellow"
+      }
+    },
+    {
+      "id": "q48s6d779",
+      "type": "line",
+      "x": 117,
+      "y": 252.33333206176758,
+      "endX": -28,
+      "endY": 362.3333320617676,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "5kc1wottq",
+      "type": "line",
+      "x": 220,
+      "y": 249.33333206176758,
+      "endX": 216,
+      "endY": 417.3333320617676,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "mi7t4mlhu",
+      "type": "line",
+      "x": 356,
+      "y": 246.33333206176758,
+      "endX": 437,
+      "endY": 361.3333320617676,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "z23jjlopc",
+      "type": "line",
+      "x": 364,
+      "y": 179.33333206176758,
+      "endX": 536,
+      "endY": 181.33333206176758,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "k3ul1fulh",
+      "type": "line",
+      "x": 120,
+      "y": 181.33333206176758,
+      "endX": -66,
+      "endY": 181.33333206176758,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "h45n3cspk",
+      "type": "rect",
+      "x": -340,
+      "y": 339.3333320617676,
+      "width": 341,
+      "height": 212,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "7woveo5qm",
+      "type": "text",
+      "x": 327,
+      "y": 176.33333206176758,
+      "data": {
+        "content": "pricing",
+        "fontSize": 16,
+        "color": "#8B2500",
+        "bold": false
+      },
+      "width": 49,
+      "height": 21
+    },
+    {
+      "id": "m04ssqlml",
+      "type": "text",
+      "x": 326,
+      "y": 192.33333206176758,
+      "data": {
+        "content": "contacts",
+        "fontSize": 16,
+        "color": "#8B2500",
+        "bold": false
+      },
+      "width": 59,
+      "height": 21
+    },
+    {
+      "id": "8i613p3to",
+      "type": "text",
+      "x": 329,
+      "y": 208.33333206176758,
+      "data": {
+        "content": "info",
+        "fontSize": 16,
+        "color": "#8B2500",
+        "bold": false
+      },
+      "width": 28,
+      "height": 21
+    },
+    {
+      "id": "9tp66565p",
+      "type": "text",
+      "x": 327,
+      "y": 224.33333206176758,
+      "data": {
+        "content": "templates",
+        "fontSize": 16,
+        "color": "#8B2500",
+        "bold": false
+      },
+      "width": 70,
+      "height": 21
+    },
+    {
+      "id": "z24wcmwbr",
+      "type": "rect",
+      "x": 44,
+      "y": 428.3333320617676,
+      "width": 322,
+      "height": 170,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "xn7piwxf4",
+      "type": "rect",
+      "x": 439,
+      "y": 336.3333320617676,
+      "width": 345,
+      "height": 199,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "tycr34ekt",
+      "type": "rect",
+      "x": 529,
+      "y": 127.33333206176758,
+      "width": 257,
+      "height": 137,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    },
+    {
+      "id": "mq2ysb6yw",
+      "type": "rect",
+      "x": -347,
+      "y": 93.33333206176758,
+      "width": 290,
+      "height": 188,
+      "data": {
+        "fill": null,
+        "stroke": "#8B2500",
+        "strokeWidth": 2
+      }
+    }
+  ]
+}

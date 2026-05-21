@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBZ — [Site Title]</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+/* ════════════════════════════════════════════════
+   SITE COLORS — edit only this block per project.
+   Swap any preset below, or define your own.
+   Accent stays vivid; everything else stays dark.
+   ════════════════════════════════════════════════ */
+:root {
+  /* ── Active preset: Dark Purple (default) ── */
+  --site-base:     #07050F;
+  --site-surface:  #0F0A22;
+  --site-elevated: #1C1040;
+  --site-accent:   #8B5CF6;
+  --site-accent-dim: #6D3FD6;
+
+  /* ── Other presets (uncomment to use) ──────
+
+  Dark Navy
+  --site-base:     #050810; --site-surface:  #080D1E; --site-elevated: #0F1630;
+  --site-accent:   #8B5CF6; --site-accent-dim: #6D3FD6;
+
+  Dark Slate
+  --site-base:     #07090F; --site-surface:  #0C1018; --site-elevated: #141C28;
+  --site-accent:   #8B5CF6; --site-accent-dim: #6D3FD6;
+
+  Dark Forest
+  --site-base:     #050A07; --site-surface:  #091210; --site-elevated: #101E1A;
+  --site-accent:   #8B5CF6; --site-accent-dim: #6D3FD6;
+
+  Dark Charcoal
+  --site-base:     #080808; --site-surface:  #111111; --site-elevated: #1A1A1A;
+  --site-accent:   #8B5CF6; --site-accent-dim: #6D3FD6;
+
+  Dark Rose
+  --site-base:     #0F0508; --site-surface:  #1A0810; --site-elevated: #240E18;
+  --site-accent:   #8B5CF6; --site-accent-dim: #6D3FD6;
+
+  ── */
+
+  /* Map to system tokens */
+  --bg-base:           var(--site-base);
+  --bg-surface:        var(--site-surface);
+  --bg-elevated:       var(--site-elevated);
+  --color-accent:      var(--site-accent);
+  --color-accent-dim:  var(--site-accent-dim);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html, body, #root { width:100%; height:100%; overflow:hidden; }
+body { font-family:var(--font-sans); background:var(--bg-base); color:var(--fg-primary); cursor:none; }
+::selection { background:var(--color-accent); color:var(--bg-base); }
+
+/* ── CURSOR ── */
+#cursor-dot, #cursor-ring {
+  position:fixed; pointer-events:none; z-index:9999;
+  border-radius:50%; transform:translate(-50%,-50%);
+}
+#cursor-dot  { width:7px; height:7px; background:var(--color-accent); transition:width .2s,height .2s; }
+#cursor-ring { width:26px; height:26px; border:1.5px solid rgba(139,92,246,0.6); transition:width .3s,height .3s; }
+#cursor-dot.expanded  { width:12px; height:12px; }
+#cursor-ring.expanded { width:40px; height:40px; }
+@media(max-width:600px){ body{cursor:auto;} #cursor-dot,#cursor-ring{display:none;} }
+
+/* ── AMBIENT GLOW (very subtle — matte direction) ── */
+.glow {
+  position:absolute; border-radius:50%;
+  filter:blur(120px); pointer-events:none; opacity:0.4;
+}
+
+/* ── NEUMORPHIC SHADOWS ── */
+/* Raised: element floats above surface */
+.neu-raised {
+  box-shadow:
+    -4px -4px 10px rgba(255,255,255,0.03),
+     4px  4px 12px rgba(0,0,0,0.7);
+}
+/* Inset: element pressed into surface */
+.neu-inset {
+  box-shadow:
+    inset -3px -3px 7px rgba(255,255,255,0.03),
+    inset  3px  3px 8px rgba(0,0,0,0.6);
+}
+/* Flat: on-surface, no depth */
+.neu-flat {
+  box-shadow:
+    -2px -2px 5px rgba(255,255,255,0.02),
+     2px  2px 6px rgba(0,0,0,0.5);
+}
+
+/* ── NAV BUTTON (home page) ── */
+.nav-btn {
+  display:flex; align-items:center; gap:14px;
+  background:none; border:none; padding:0;
+  font-family:var(--font-sans); font-size:0.82rem;
+  font-weight:400; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--color-muted-purple); cursor:none;
+  transition:color var(--duration-base) var(--ease-out);
+  text-decoration:none;
+}
+.nav-btn:hover { color:var(--fg-secondary); }
+.nav-btn .arrow {
+  width:20px; height:1px; background:currentColor;
+  position:relative; transform:scaleX(0); transform-origin:left;
+  transition:transform var(--duration-base) var(--ease-out);
+}
+.nav-btn:hover .arrow { transform:scaleX(1); }
+
+/* ── PRIMARY BUTTON ── */
+.btn-pri {
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--bg-elevated);
+  border:none; border-radius:var(--radius-full); padding:13px 28px;
+  font-family:var(--font-sans); font-size:0.82rem; font-weight:500; letter-spacing:0.04em;
+  color:var(--color-secondary-light); cursor:none;
+  box-shadow:
+    -3px -3px 8px rgba(255,255,255,0.03),
+     3px  3px 10px rgba(0,0,0,0.65);
+  transition:box-shadow var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out), color var(--duration-fast);
+}
+.btn-pri:hover {
+  color:#fff;
+  box-shadow:
+    -4px -4px 10px rgba(255,255,255,0.04),
+     4px  4px 14px rgba(0,0,0,0.75);
+  transform:translateY(-1px);
+}
+.btn-pri:active {
+  box-shadow:
+    inset -2px -2px 5px rgba(255,255,255,0.03),
+    inset  2px  2px 7px rgba(0,0,0,0.6);
+  transform:none;
+}
+
+/* ── GHOST BUTTON ── */
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--bg-surface); border:none;
+  border-radius:var(--radius-full); padding:11px 24px;
+  font-family:var(--font-sans); font-size:0.82rem; font-weight:400; letter-spacing:0.04em;
+  color:var(--color-muted-purple); cursor:none;
+  box-shadow:
+    -3px -3px 7px rgba(255,255,255,0.025),
+     3px  3px 9px rgba(0,0,0,0.55);
+  transition:box-shadow var(--duration-base) var(--ease-out), color var(--duration-fast);
+}
+.btn-ghost:hover {
+  color:var(--color-secondary-light);
+  box-shadow:
+    -4px -4px 10px rgba(255,255,255,0.035),
+     4px  4px 12px rgba(0,0,0,0.65);
+}
+
+/* ── CARD ── */
+.card {
+  border:none;
+  border-radius:var(--radius-lg);
+  background:var(--bg-elevated);
+  overflow:hidden;
+  box-shadow:
+    -4px -4px 10px rgba(255,255,255,0.025),
+     5px  5px 14px rgba(0,0,0,0.65);
+  transition:box-shadow 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+  cursor:none;
+}
+.card:hover {
+  transform:translateY(-4px);
+  box-shadow:
+    -5px -5px 14px rgba(255,255,255,0.03),
+     7px  7px 20px rgba(0,0,0,0.75);
+}
+
+/* ── FORM ── */
+.bbz-input {
+  background:var(--bg-surface);
+  border:none;
+  border-radius:var(--radius-md); padding:13px 16px;
+  color:var(--fg-primary); font-family:var(--font-sans); font-size:0.88rem;
+  width:100%; outline:none;
+  box-shadow:
+    inset -2px -2px 5px rgba(255,255,255,0.025),
+    inset  2px  2px 7px rgba(0,0,0,0.55);
+  transition:box-shadow var(--duration-fast);
+}
+.bbz-input:focus {
+  box-shadow:
+    inset -2px -2px 5px rgba(255,255,255,0.025),
+    inset  2px  2px 7px rgba(0,0,0,0.55),
+    0 0 0 2px rgba(139,92,246,0.2);
+}
+.bbz-input::placeholder { color:var(--color-mid-purple); }
+
+/* ── TAG / PILL ── */
+.tag {
+  display:inline-block;
+  font-family:var(--font-mono); font-size:0.55rem; letter-spacing:0.08em;
+  color:var(--color-muted-purple);
+  background:var(--bg-surface);
+  border:none;
+  border-radius:var(--radius-sm); padding:3px 9px;
+  box-shadow:
+    inset -1px -1px 3px rgba(255,255,255,0.02),
+    inset  1px  1px 4px rgba(0,0,0,0.45);
+}
+
+/* ── DIVIDER ── */
+.divider { width:100%; height:1px; background:rgba(255,255,255,0.03); }
+
+/* ── PAGE TRANSITIONS ── */
+@keyframes pageIn  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes pageOut { from{opacity:1;transform:none}             to{opacity:0;transform:translateY(-14px)} }
+@keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--border-subtle); border-radius:2px; }
+
+/* ── MOBILE / TABLET ── */
+@media(max-width:600px){
+  body { cursor:auto; }
+  #cursor-dot, #cursor-ring { display:none; }
+  .btn-pri, .btn-ghost, .nav-btn { cursor:pointer; }
+
+  /* home mobile */
+  .home-wrap { flex-direction:column !important; justify-content:flex-start !important; }
+  .home-headline { font-size:clamp(2.6rem,11vw,4rem) !important; }
+  .home-nav-item { font-size:1.1rem !important; }
+  .home-divider { display:none !important; }
+
+  /* shell */
+  .shell-topbar { padding:18px 20px !important; }
+  .shell-nav { display:none !important; }
+  .shell-clock { display:none !important; }
+  .shell-title-wrap { padding:20px 20px 14px !important; }
+  .shell-content { padding:12px 20px 40px !important; }
+
+  /* cards */
+  .card-grid { grid-template-columns:1fr !important; }
+
+  /* hamburger */
+  .shell-hamburger { display:flex !important; }
+  .shell-nav { display:none !important; }
+  .shell-clock { display:none !important; }
+}
+
+@media(min-width:601px) and (max-width:1024px){
+  /* home tablet */
+  .home-headline { font-size:clamp(2.4rem,6vw,4.5rem) !important; }
+  .home-nav-item { font-size:1.2rem !important; }
+
+  /* shell */
+  .shell-topbar { padding:22px 32px !important; }
+  .shell-title-wrap { padding:26px 32px 18px !important; }
+  .shell-content { padding:12px 32px 40px !important; }
+  .shell-nav-link:not(:nth-child(-n+3)) { display:none; }
+
+  /* cards */
+  .card-grid { grid-template-columns:repeat(2,1fr) !important; }
+}
+</style>
+</head>
+<body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<div id="root"></div>
+
+<script type="text/babel">
+
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ════════════════════════════════════════════════
+   SHARED PRIMITIVES
+   Copy these into every BBZ site unchanged.
+   ════════════════════════════════════════════════ */
+
+/* ── CURSOR ── */
+function Cursor() {
+  useEffect(() => {
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+    let rx = 0,ry = 0,mx = 0,my = 0,raf;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const onMove = (e) => {
+      mx = e.clientX;my = e.clientY;
+      dot.style.left = mx + 'px';dot.style.top = my + 'px';
+    };
+    const onEnter = () => {dot.classList.add('expanded');ring.classList.add('expanded');};
+    const onLeave = () => {dot.classList.remove('expanded');ring.classList.remove('expanded');};
+    const loop = () => {
+      rx = lerp(rx, mx, 0.1);ry = lerp(ry, my, 0.1);
+      ring.style.left = rx + 'px';ring.style.top = ry + 'px';
+      raf = requestAnimationFrame(loop);
+    };
+    loop();
+    window.addEventListener('mousemove', onMove);
+    document.querySelectorAll('button,a,[data-hover]').forEach((el) => {
+      el.addEventListener('mouseenter', onEnter);
+      el.addEventListener('mouseleave', onLeave);
+    });
+    return () => {window.removeEventListener('mousemove', onMove);cancelAnimationFrame(raf);};
+  }, []);
+  return null;
+}
+
+/* ── LIVE CLOCK ── */
+function Clock() {
+  const [t, setT] = useState('');
+  useEffect(() => {
+    const tick = () => setT(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+  return <span>{t}</span>;
+}
+
+/* ── AMBIENT GLOW BLOBS ── */
+function GlowTopRight() {
+  return (
+    <>
+      <div className="glow" style={{ width: '55vw', height: '55vw', background: 'radial-gradient(ellipse,rgba(139,92,246,0.16) 0%,transparent 70%)', top: '-10vw', right: '-5vw' }} />
+      <div className="glow" style={{ width: '28vw', height: '28vw', background: 'radial-gradient(ellipse,rgba(139,92,246,0.07) 0%,transparent 70%)', bottom: '8vw', left: '10vw' }} />
+    </>);
+
+}
+
+/* ── AVAILABILITY DOT ── */
+function AvailBadge({ label = 'Available — Q2 2025' }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--color-accent)', animation: 'pulse 2s infinite' }} />
+      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-muted-purple)' }}>
+        {label}
+      </span>
+    </div>);
+
+}
+
+/* ════════════════════════════════════════════════
+   PAGE SHELL
+   Wraps every inner page. Provides:
+   - Fixed top bar: back arrow + BBZ logo, nav links, clock
+   - Page title block with eyebrow
+   - Scrollable content area
+   ════════════════════════════════════════════════ */
+function PageShell({ nav, title, sub, navItems = [], children }) {
+  const [in_, setIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {requestAnimationFrame(() => setIn(true));}, []);
+
+  const links = navItems.length ? navItems : ['work', 'about', 'process', 'contact'];
+
+  return (
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+
+      {/* ambient */}
+      <div className="glow" style={{ width: '40vw', height: '40vw', background: 'radial-gradient(ellipse,rgba(139,92,246,0.12) 0%,transparent 70%)', top: '-8vw', right: 0, pointerEvents: 'none' }} />
+
+      {/* ── TOP BAR ── */}
+      <header className="shell-topbar" style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '28px 48px', flexShrink: 0,
+        borderBottom: '1px solid var(--border-subtle)'
+      }}>
+        {/* Back / Logo */}
+        <button onClick={() => nav('home')} style={{
+          background: 'none', border: 'none', cursor: 'inherit',
+          display: 'flex', alignItems: 'center', gap: 10,
+          color: 'var(--color-muted-purple)', fontFamily: 'var(--font-sans)',
+          fontSize: '0.75rem', letterSpacing: '0.04em',
+          transition: 'color var(--duration-fast)'
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-secondary-light)'}
+        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-muted-purple)'}>
+          
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <line x1="13" y1="5" x2="1" y2="5" /><polyline points="5 1 1 5 5 9" />
+          </svg>
+          BBZ
+        </button>
+
+        {/* Desktop nav */}
+        <nav className="shell-nav" style={{ display: 'flex', gap: 28 }}>
+          {links.map((p) => {
+            const active = title.toLowerCase() === p;
+            return (
+              <button key={p} className="shell-nav-link" onClick={() => nav(p)} style={{
+                background: 'none', border: 'none', cursor: 'inherit',
+                fontFamily: 'var(--font-sans)', fontSize: '0.75rem',
+                letterSpacing: '0.06em', textTransform: 'capitalize',
+                color: active ? 'var(--color-secondary-light)' : 'var(--color-mid-purple)',
+                transition: 'color var(--duration-fast)'
+              }}
+              onMouseEnter={(e) => {if (!active) e.currentTarget.style.color = 'var(--color-muted)';}}
+              onMouseLeave={(e) => {if (!active) e.currentTarget.style.color = 'var(--color-mid-purple)';}}>
+                {p}</button>);
+
+          })}
+        </nav>
+
+        {/* Mobile hamburger */}
+        <button onClick={() => setMenuOpen((o) => !o)} style={{
+          display: 'none', background: 'none', border: 'none', cursor: 'pointer',
+          flexDirection: 'column', gap: 5, padding: 4
+        }} className="shell-hamburger">
+          <span style={{ width: 20, height: 1.5, background: 'var(--color-muted-purple)', display: 'block', transition: 'all 0.2s', transform: menuOpen ? 'rotate(45deg) translateY(4.5px)' : 'none' }} />
+          <span style={{ width: 20, height: 1.5, background: 'var(--color-muted-purple)', display: 'block', opacity: menuOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
+          <span style={{ width: 20, height: 1.5, background: 'var(--color-muted-purple)', display: 'block', transition: 'all 0.2s', transform: menuOpen ? 'rotate(-45deg) translateY(-4.5px)' : 'none' }} />
+        </button>
+
+        {/* Clock */}
+        <div className="shell-clock" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.12em', color: 'var(--color-mid-purple)' }}>
+          <Clock />
+        </div>
+      </header>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen &&
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 100,
+        background: 'var(--bg-overlay)', backdropFilter: 'blur(20px)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8
+      }}>
+          <button onClick={() => setMenuOpen(false)} style={{
+          position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', cursor: 'pointer',
+          color: 'var(--color-muted-purple)', fontSize: '1.5rem', lineHeight: 1, padding: 8
+        }}>✕</button>
+          {links.map((p, i) =>
+        <button key={p} onClick={() => {nav(p);setMenuOpen(false);}} style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: 'var(--font-sans)', fontSize: '2rem', fontWeight: 700,
+          letterSpacing: '-0.02em', textTransform: 'capitalize',
+          color: title.toLowerCase() === p ? 'var(--color-accent)' : 'var(--color-secondary-light)',
+          padding: '12px 0',
+          transition: 'color var(--duration-fast)'
+        }}>{p}</button>
+        )}
+        </div>
+      }
+
+      {/* ── PAGE TITLE ── */}
+      <div className="shell-title-wrap" style={{
+        padding: '32px 48px 24px', flexShrink: 0,
+        opacity: in_ ? 1 : 0, transform: in_ ? 'none' : 'translateY(16px)',
+        transition: `opacity 0.7s 0.05s var(--ease-out), transform 0.7s 0.05s var(--ease-out)`
+      }}>
+        {sub &&
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted-purple)', marginBottom: 8 }}>
+            {sub}
+          </div>
+        }
+        <h1 style={{ fontSize: 'clamp(1.8rem,4vw,4rem)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 0.95 }}>
+          {title}
+        </h1>
+      </div>
+
+      {/* ── SCROLLABLE CONTENT ── */}
+      <main className="shell-content" style={{
+        flex: 1, overflowY: 'auto', padding: '16px 48px 48px',
+        opacity: in_ ? 1 : 0, transform: in_ ? 'none' : 'translateY(20px)',
+        transition: `opacity 0.75s 0.12s var(--ease-out), transform 0.75s 0.12s var(--ease-out)`,
+        scrollbarWidth: 'none'
+      }}>
+        {children}
+      </main>
+    </div>);
+
+}
+
+/* ════════════════════════════════════════════════
+   HOME PAGE
+   Full-bleed. No scroll. Bottom-left headline,
+   bottom-right large nav, top-right clock + avail.
+   ════════════════════════════════════════════════ */
+function Home({ nav }) {
+  const [in_, setIn] = useState(false);
+  useEffect(() => {requestAnimationFrame(() => setIn(true));}, []);
+
+  /* ── EDIT: your top-level nav pages ── */
+  const navItems = [
+  { label: 'Work', page: 'work' },
+  { label: 'About', page: 'about' },
+  { label: 'Process', page: 'process' },
+  { label: 'Contact', page: 'contact' }];
+
+
+  const show = (delay) => ({
+    opacity: in_ ? 1 : 0,
+    transform: in_ ? 'none' : 'translateY(18px)',
+    transition: `opacity 0.8s ${delay}s var(--ease-out), transform 0.8s ${delay}s var(--ease-out)`
+  });
+
+  const isMobile = window.innerWidth <= 600;
+  const isTablet = window.innerWidth > 600 && window.innerWidth <= 1024;
+
+  if (isMobile) {
+    /* ── MOBILE HOME: vertical stack ── */
+    return (
+      <div style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: '0 24px' }}>
+        <GlowTopRight />
+
+        {/* top bar */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 24, paddingBottom: 0, flexShrink: 0 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 500, fontSize: '0.9rem', letterSpacing: '0.18em', color: 'var(--fg-primary)' }}>BBZ</div>
+          <AvailBadge label="Available" />
+        </div>
+
+        {/* headline — center of screen */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.56rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--color-muted-purple)', marginBottom: 20, ...show(0.2) }}>
+            Designer &amp; Developer
+          </div>
+          <div className="home-headline" style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 0.9, fontSize: 'clamp(2.8rem,12vw,5rem)', color: 'var(--fg-primary)', ...show(0.3) }}>
+            Premium<br /><span style={{ color: 'var(--color-accent)' }}>Digital</span><br />Experiences
+          </div>
+        </div>
+
+        {/* nav — bottom */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0, paddingBottom: 40, flexShrink: 0 }}>
+          {navItems.map((item, i) =>
+          <button key={item.page} onClick={() => nav(item.page)} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '14px 0', borderBottom: '1px solid var(--border-subtle)',
+            fontFamily: 'var(--font-sans)', fontSize: '1rem', fontWeight: 600,
+            letterSpacing: '-0.01em', color: 'var(--fg-primary)',
+            opacity: in_ ? 1 : 0, transition: `opacity 0.6s ${0.4 + i * 0.07}s var(--ease-out)`
+          }}>
+              {item.label}
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'var(--color-mid-purple)' }}>→</span>
+            </button>
+          )}
+        </div>
+      </div>);
+
+  }
+
+  /* ── DESKTOP / TABLET HOME ── */
+  return (
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+
+      <GlowTopRight />
+
+      {/* Logo — left, above headline */}
+      <div style={{ position: 'absolute', bottom: isTablet ? 220 : 260, left: isTablet ? 32 : 48, ...show(0.1) }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontWeight: 500, fontSize: '1.1rem', letterSpacing: '0.18em', color: 'var(--fg-primary)' }}>BBZ</div>
+      </div>
+
+      {/* Availability — top left */}
+      <div style={{ position: 'absolute', top: 44, left: isTablet ? 32 : 48, ...show(0.85) }}>
+        <AvailBadge label="Available — Q2 2025" />
+      </div>
+
+      {/* Clock — top right */}
+      <div style={{ position: 'absolute', top: 46, right: isTablet ? 32 : 48, fontFamily: 'var(--font-mono)', fontSize: '0.62rem', letterSpacing: '0.12em', color: 'var(--color-mid-purple)' }}>
+        <Clock />
+      </div>
+
+      {/* Vertical divider — center (desktop only) */}
+      {!isTablet &&
+      <div className="home-divider" style={{ position: 'absolute', left: '50%', top: '15%', bottom: '15%', width: 1, background: 'linear-gradient(to bottom,transparent,var(--border-subtle),transparent)', opacity: in_ ? 1 : 0, transition: 'opacity 1s 0.9s' }} />
+      }
+
+      {/* ── BOTTOM LEFT: headline ── */}
+      <div style={{ position: 'absolute', bottom: isTablet ? 32 : 48, left: isTablet ? 32 : 48, display: 'flex', flexDirection: 'column', gap: 0, maxWidth: isTablet ? '50vw' : '45vw' }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--color-muted-purple)', marginBottom: 24, opacity: in_ ? 1 : 0, transition: `opacity 0.7s 0.25s var(--ease-out)` }}>
+          Designer &amp; Developer
+        </div>
+        <div className="home-headline" style={{ fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 0.88, fontSize: 'clamp(2.4rem,5vw,6rem)', color: 'var(--fg-primary)', ...show(0.3), fontFamily: "\"Abril Fatface\"" }}>
+          Premium<br /><span style={{ color: 'var(--color-accent)' }}>Digital</span><br />Experiences
+        </div>
+      </div>
+
+      {/* ── BOTTOM RIGHT: large nav ── */}
+      <div style={{ position: 'absolute', bottom: isTablet ? 32 : 48, right: isTablet ? 32 : 56, display: 'flex', flexDirection: 'column', gap: isTablet ? 6 : 10, alignItems: 'flex-end' }}>
+        {navItems.map((item, i) =>
+        <button key={item.page} className="nav-btn home-nav-item" onClick={() => nav(item.page)} style={{
+          fontSize: isTablet ? '1.1rem' : '1.5rem', fontWeight: 700, letterSpacing: '-0.02em', gap: 14,
+          opacity: in_ ? 1 : 0, transform: in_ ? 'none' : 'translateX(16px)',
+          transition: `opacity 0.7s ${0.4 + i * 0.09}s var(--ease-out), transform 0.7s ${0.4 + i * 0.09}s var(--ease-out)`
+        }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.55rem', color: 'var(--color-mid-purple)', letterSpacing: '0.1em' }}>0{i + 1}</span>
+            {item.label}
+            <div className="arrow" style={{ width: isTablet ? 20 : 28 }} />
+          </button>
+        )}
+      </div>
+    </div>);
+
+}
+
+/* ════════════════════════════════════════════════
+   PLACEHOLDER INNER PAGES
+   Replace content inside <PageShell> with your own.
+   ════════════════════════════════════════════════ */
+
+function PageTemplate({ nav, title, sub }) {
+  return (
+    <PageShell nav={nav} title={title} sub={sub}>
+
+      {/* ── Your page content goes here ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 8 }}>
+
+        {/* Example: intro paragraph */}
+        <p style={{ fontSize: '1.05rem', color: 'var(--color-secondary-light)', lineHeight: 1.8, fontWeight: 300, maxWidth: '55ch' }}>
+          Replace this with your page content. Use the BBZ component patterns: cards, tags, forms, grids.
+        </p>
+
+        {/* Example: a row of cards */}
+        <div className="card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginTop: 16 }}>
+          {['Card One', 'Card Two', 'Card Three'].map((label, i) =>
+          <div key={i} className="card" style={{ padding: 28 }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', letterSpacing: '0.14em', color: 'var(--color-accent)', marginBottom: 14 }}>0{i + 1}</div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 10 }}>{label}</h3>
+              <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', lineHeight: 1.7 }}>Placeholder content. Replace with real copy.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Example: CTA */}
+        <div style={{ marginTop: 8 }}>
+          <button className="btn-pri" onClick={() => nav('contact')}>Start a Project →</button>
+        </div>
+      </div>
+
+    </PageShell>);
+
+}
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "scheme": "Dark Forest"
+}/*EDITMODE-END*/;
+
+const COLOR_SCHEMES = {
+  'Dark Purple':   { base:'#07050F', surface:'#0F0A22', elevated:'#1C1040' },
+  'Dark Navy':     { base:'#050810', surface:'#080D1E', elevated:'#0F1630' },
+  'Dark Slate':    { base:'#07090F', surface:'#0C1018', elevated:'#141C28' },
+  'Dark Forest':   { base:'#050A07', surface:'#091210', elevated:'#101E1A' },
+  'Dark Charcoal': { base:'#080808', surface:'#111111', elevated:'#1A1A1A' },
+  'Dark Rose':     { base:'#0F0508', surface:'#1A0810', elevated:'#240E18' },
+};
+
+function applyScheme(name) {
+  const s = COLOR_SCHEMES[name];
+  if (!s) return;
+  const r = document.documentElement.style;
+  r.setProperty('--site-base',     s.base);
+  r.setProperty('--site-surface',  s.surface);
+  r.setProperty('--site-elevated', s.elevated);
+}
+
+/* ── TWEAKS PANEL ── */
+function TweaksPanel({ visible, scheme, setScheme }) {
+  if (!visible) return null;
+  return (
+    <div style={{
+      position:'fixed', bottom:24, right:24, zIndex:1000,
+      background:'var(--bg-elevated)',
+      borderRadius:16, padding:'20px 20px 16px',
+      boxShadow:'-4px -4px 10px rgba(255,255,255,0.025), 5px 5px 14px rgba(0,0,0,0.65)',
+      minWidth:200,
+    }}>
+      <div style={{fontFamily:'var(--font-mono)',fontSize:'0.58rem',letterSpacing:'0.14em',textTransform:'uppercase',color:'var(--color-muted-purple)',marginBottom:14}}>Tweaks</div>
+      <div style={{fontFamily:'var(--font-mono)',fontSize:'0.56rem',letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--color-mid-purple)',marginBottom:8}}>Color Scheme</div>
+      <div style={{display:'flex',flexDirection:'column',gap:5}}>
+        {Object.keys(COLOR_SCHEMES).map(name => {
+          const s = COLOR_SCHEMES[name];
+          const active = scheme === name;
+          return (
+            <button key={name} onClick={() => { setScheme(name); applyScheme(name); window.parent.postMessage({type:'__edit_mode_set_keys', edits:{scheme:name}},'*'); }} style={{
+              display:'flex', alignItems:'center', gap:10,
+              background:'none', border:'none', cursor:'pointer',
+              padding:'5px 0', textAlign:'left',
+            }}>
+              {/* swatch trio */}
+              <div style={{display:'flex',gap:2,flexShrink:0}}>
+                {[s.base, s.surface, s.elevated].map((c,i) => (
+                  <div key={i} style={{width:10,height:10,borderRadius:2,background:c,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'}}/>
+                ))}
+              </div>
+              <span style={{fontFamily:'var(--font-sans)',fontSize:'0.72rem',color:active?'var(--fg-primary)':'var(--color-muted-purple)',fontWeight:active?500:400}}>
+                {name}
+              </span>
+              {active && <div style={{width:4,height:4,borderRadius:'50%',background:'var(--color-accent)',marginLeft:'auto'}}/>}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+const STORAGE_KEY = 'bbz-page'; /* ← EDIT: unique key per site */
+
+function App() {
+  const [page, setPage] = useState(() => localStorage.getItem(STORAGE_KEY) || 'home');
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+  const [scheme, setScheme] = useState(() => TWEAK_DEFAULTS.scheme || 'Dark Purple');
+
+  useEffect(() => {
+    applyScheme(scheme);
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode')   setTweaksVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const nav = useCallback((p) => {
+    setPage(p);
+    localStorage.setItem(STORAGE_KEY, p);
+  }, []);
+
+  /* ── EDIT: register your pages here ── */
+  const pages = {
+    home:    (props) => <Home {...props}/>,
+    work:    (props) => <PageTemplate {...props} title="Work"    sub="Selected projects"/>,
+    about:   (props) => <PageTemplate {...props} title="About"   sub="Who I am"/>,
+    process: (props) => <PageTemplate {...props} title="Process" sub="How it works"/>,
+    contact: (props) => <PageTemplate {...props} title="Contact" sub="Let's build something"/>,
+  };
+
+  const Page = pages[page] || pages.home;
+
+  return (
+    <>
+      <Cursor/>
+      <div key={page} style={{animation:'pageIn 0.6s var(--ease-out) forwards'}}>
+        <Page nav={nav}/>
+      </div>
+      <TweaksPanel visible={tweaksVisible} scheme={scheme} setScheme={setScheme}/>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
