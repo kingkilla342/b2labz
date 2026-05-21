@@ -454,7 +454,7 @@ function Home({ nav }) {
             atlantis edition,
           </div>
           <div className="home-headline" style={{ fontFamily: 'var(--font-sans)', fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 0.9, fontSize: 'clamp(2.2rem, 10vw, 4rem)', color: 'var(--fg-primary)', ...show(0.25) }}>
-            Premium <span className="script" style={{ fontSize: '1.05em' }}>websites</span><br />built faster<br />with AI.
+            Premium <span className="script" style={{ fontSize: '1.05em' }}>websites</span><br />built faster,<br />done right.
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0, paddingBottom: 34, flexShrink: 0 }}>
@@ -515,8 +515,8 @@ function Home({ nav }) {
         </div>
         <div className="home-headline" style={{ fontWeight: 700, letterSpacing: '-0.035em', lineHeight: 0.9, color: 'var(--fg-primary)', ...show(0.3), fontFamily: "Manrope", fontSize: "44px" }}>
           Premium <span className="script" style={{ fontSize: '1.1em', color: 'var(--color-accent)' }}>websites</span><br />
-          built faster<br />
-          with AI.
+          built faster,<br />
+          done right.
         </div>
         <div style={{ marginTop: 22, fontFamily: 'var(--font-sans)', fontSize: '0.88rem', color: 'var(--color-secondary-light)', maxWidth: 380, lineHeight: 1.55, ...show(0.42) }}>
           B2 Labz builds clean, modern websites for businesses, creators and brands — without the tech stress.

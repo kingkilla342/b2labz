@@ -102,8 +102,8 @@ window.BBZ_DATA = {
   process: [
     { n: '01', title: 'Intake',            out: 'Project Brief',  desc: 'We collect your business details, goals, photos, links, and the style direction you’re after.' },
     { n: '02', title: 'Strategy',          out: 'Page Plan',      desc: 'We decide what the site must do — bookings, calls, sales, trust — and map the page structure.' },
-    { n: '03', title: 'Direction',         out: 'Mood Board',     desc: 'Godly, 21st.dev, and Claude Design references shape a custom visual direction unique to your brand.' },
-    { n: '04', title: 'AI Build',          out: 'Live Preview',   desc: 'Claude plans structure and copy, Antigravity builds the components, and you see progress in real time.' },
+    { n: '03', title: 'Direction',         out: 'Mood Board',     desc: 'Curated references from Godly, 21st.dev, and our own archive shape a custom visual direction unique to your brand.' },
+    { n: '04', title: 'Build',             out: 'Live Preview',   desc: 'We plan the structure and copy, build the components, and you see progress in real time on a preview link.' },
     { n: '05', title: 'Review',            out: 'Revision List',  desc: 'You get a preview link with structured feedback prompts. One organized round, no death-by-tweak.' },
     { n: '06', title: 'Launch',            out: 'Live Website',   desc: 'Domain connected, performance checked, mobile tested, GitHub committed, Vercel live. Done.' },
   ],
@@ -130,7 +130,7 @@ window.BBZ_DATA = {
   ],
 
   whyItems: [
-    { ix: '01', title: 'AI-Powered Speed',         body: 'Claude plans and writes. Antigravity builds. You launch in days, not months.' },
+    { ix: '01', title: 'Built For Speed',          body: 'A modern workflow and a sharp toolkit — your site launches in days, not months.' },
     { ix: '02', title: 'Premium Visual Direction', body: 'Inspired by Godly + 21st.dev. We refuse to ship template-looking sites.' },
     { ix: '03', title: 'Beginner-Friendly',        body: 'No tech jargon. We guide you through every step in plain language.' },
     { ix: '04', title: 'Fixed Packages',           body: 'Clear scope. Clear timeline. Clear price. No surprise invoices.' },

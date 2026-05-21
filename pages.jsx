@@ -174,10 +174,10 @@ function InfoPage({ nav }) {
             and a weak online presence.
           </p>
           <p style={{ fontSize: '0.95rem', color: 'var(--color-muted)', lineHeight: 1.7, marginBottom: 22 }}>
-            We use AI to move fast — Claude for planning + copy, Antigravity for the build,
-            GitHub + Vercel for deployment — but every decision still gets human taste.
-            The result is a site that loads quick, looks premium, and isn't locked into a
-            template platform.
+            We move fast by being precise — tight scoping, a sharp toolkit, and a
+            modern stack (GitHub + Vercel) for handoff. Every decision still gets
+            human taste, so the result is a site that loads quick, looks premium,
+            and isn't locked into a template platform.
           </p>
           <button className="btn-pri" onClick={() => nav('contact')}>Start a Project →</button>
         </div>
